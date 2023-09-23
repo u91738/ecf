@@ -1,0 +1,5 @@
+__pycache__
+dynamorio
+example-data/example
+example-data/example-gcov
+example-data/*.gcno
