@@ -8,10 +8,14 @@ from ecf.target import GCovTarget
 t = GCovTarget(['./example-data/example-gcov'], ['./example-data/example-gcov-cJSON.gcno', './example-data/example-gcov-test.gcno'])
 
 initial_corpus = read_corpus_dir('./example-data/corpus')
-mut = m.Rotate(m.Dup(1, 20), m.ValueInsert(4, 8), m.RandByte(1, 4), m.BitFlip(1, 4))
+corpus = Corpus()
+mut = m.Rotate(
+    m.RandByte(1, 4),
+    m.Splice(corpus),
+    m.MarkovChain(None, 0.2))
 
 with ParallelTargetRunner(t) as runner:
-    fuzz = Fuzz(runner, mut, initial_corpus, 1000)
+    fuzz = Fuzz(runner, mut, initial_corpus, 1000, corpus)
     while True:
         crashes = fuzz.step()
         for c in crashes:

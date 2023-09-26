@@ -1,4 +1,5 @@
-from random import randrange, choice
+from random import randrange, choice, shuffle
+import more_itertools as mit
 
 def batch(mutate_one):
     def mutate(self, samples, n):
@@ -9,6 +10,9 @@ def batch(mutate_one):
                 if len(r) == n:
                     return r
     return mutate
+
+def randrange_s(lo, hi):
+    return lo if lo == hi else randrange(lo, hi)
 
 class BitFlip:
     def __init__(self, n_min, n_max):
@@ -37,7 +41,7 @@ class RandByte:
         r = bytearray(sample)
         cnt = randrange(self.n_min, self.n_max)
         for _ in range(cnt):
-            pos = randrange(0, len(r))
+            pos = randrange_s(0, len(r))
             v = randrange(0, 0x100)
             if randrange(0, 2):
                 r.insert(pos, v)
@@ -65,7 +69,7 @@ class ValueInsert:
         r = bytearray(sample)
         cnt = randrange(self.n_min, self.n_max)
         for _ in range(cnt):
-            pos = randrange(0, len(r) - 1)
+            pos = randrange_s(0, len(r) - 1)
             r[pos:pos] = choice(self.values)
         return r
 
@@ -79,6 +83,25 @@ class Dup:
     def mutate(self, sample):
         r = bytearray(sample)
         size = min(randrange(self.n_min, self.n_max), len(r))
-        pos = randrange(0, len(r) - size + 1)
+        pos = randrange_s(0, len(r) - size + 1)
         r[pos:pos] = r[pos:pos+size]
+        return r
+
+class Splice:
+    def __init__(self, corpus=None, n_min=0, n_max=0xFFFF):
+        self.n_min = n_min
+        self.n_max = n_max
+        self.corpus = corpus
+        self.name = type(self).__name__
+
+    def mutate(self, samples, n):
+        inputs = list(mit.sample(self.corpus.inputs, n) if self.corpus else samples)
+        r = []
+        while len(r) < n:
+            for a in samples:
+                b = choice(inputs)
+                n_max = min(self.n_max, len(a), len(b))
+                n_min = min(self.n_min, len(a), len(b))
+                n = randrange_s(n_min, n_max)
+                r.append(a[:n] + b[n:] if randrange(0, 2) else b[:n] + a[n:])
         return r

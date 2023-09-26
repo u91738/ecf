@@ -5,7 +5,8 @@ The goal of this project is to provide a Python framework to fuzz anything that 
 Anything that can give a set of numbers will do.
 
 Some software needs to run in unusual environments, be it VM with customized DOS or locked down embedded platform, you may be unable to run conventional tools.
-With ECF, you need to write a target class that can get the coverage data off the target.
+
+With ECF, you need to write a target class that can get the coverage data off the target. And let it do the rest.
 For example if you can get gcov-instrumented binary running on the target, you would extend GCovTarget like
 ```
 # define custom target
