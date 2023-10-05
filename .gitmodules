@@ -1,3 +1,6 @@
 [submodule "example-data/cJSON"]
 	path = example-data/cJSON
 	url = https://github.com/DaveGamble/cJSON
+[submodule "example-data/arm/coreJSON"]
+	path = example-data/arm/coreJSON
+	url = https://github.com/FreeRTOS/coreJSON

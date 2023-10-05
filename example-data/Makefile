@@ -1,9 +1,6 @@
+CFLAGS=-O2 -IcJSON -std=c11
 
-# -I .... cJSON.h
-
-CFLAGS=-O2 -IcJSON #-g
-
-all: example-gcov example
+all: example-gcov example example-arm
 
 example-gcov: example.c cJSON/cJSON.c
 	gcc -ftest-coverage -fprofile-arcs $(CFLAGS) $^ -o $@
@@ -11,5 +8,9 @@ example-gcov: example.c cJSON/cJSON.c
 example: example.c cJSON/cJSON.c
 	gcc $(CFLAGS) $^ -o $@
 
+example-arm:
+	make -C arm
+
 clean:
 	rm -f example-gcov example *.gcda *.gcno
+	make -C arm clean
