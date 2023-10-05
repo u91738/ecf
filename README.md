@@ -29,5 +29,5 @@ while True:
         break
 ```
 
-For more usage examples (multiple mutators, parallel execution) see `example-*.py`.
-If you want to play with examples, update git submodules, then `cd example-data && make`.
+For more usage examples (multiple mutators, parallel execution, bare metal ARM firmware in QEMU) see `example-*.py`.
+If you want to play with examples - update git submodules, then `cd example-data && make`, you will need arm-none-eabi-gcc toolchain.
