@@ -1,4 +1,7 @@
 class Rotate:
+    '''Use each mutator once then start again
+    name will be set to currently used mutator'''
+
     def __init__(self, *mutators):
         self.mutators = mutators
         self.i = 0
@@ -14,6 +17,10 @@ class Rotate:
         return m.mutate(samples, n)
 
 class NRotate:
+    '''Use each mutator N times then start again
+    i.e. NRotate((RandByte(1, 4), 3), (m.Splice(corpus), 2)) is the same as
+    Rotate(RandByte(1, 4), RandByte(1, 4), RandByte(1, 4), m.Splice(corpus), m.Splice(corpus))'''
+
     def __init__(self, *mutators):
         self.mutators = mutators
         self.mutator_ind = 0

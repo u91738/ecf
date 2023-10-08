@@ -1,6 +1,8 @@
 import numpy as np
 
 class _MarkovChainImpl:
+    '''Internal implementation of byte-by-byte Markov chain'''
+
     def __init__(self, samples, impossible_transition_prob=None):
         # use 256 for "end of sequence" and 257 as initial state
         m = np.zeros((258,257))
@@ -58,6 +60,11 @@ class _MarkovChainImpl:
         return r
 
 class MarkovChain:
+    '''Byte-by-byte markov chain generator.
+    Learns from samples of this step or whole corpus + weighted samples.
+    If impossible_transition_prob is not None,
+    each step has a chance to step into a state that is not possible according to known dataset'''
+
     def __init__(self, corpus=None, impossible_transition_prob=None, samples_weight=3):
         self.corpus = corpus
         self.samples_weight = samples_weight

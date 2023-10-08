@@ -3,6 +3,8 @@ from .corpus import Corpus
 from .stats import Stats
 
 class Fuzz:
+    '''Main fuzzer object. Coordinates other classes'''
+
     def __init__(self, target_runner, mutator, initial_corpus, batch_size, corpus=None):
         self.corpus = corpus if corpus else Corpus()
         self.stats = Stats(batch_size, mutator, self.corpus)

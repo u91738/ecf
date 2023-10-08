@@ -17,6 +17,8 @@ class BlockStats:
             self.inputs = set(inps[:n])
 
 class Corpus:
+    '''Fuzzing corpus. Main state of the fuzzer'''
+
     blocks: defaultdict[int, BlockStats]
     inputs: set[bytes]
 
@@ -25,6 +27,7 @@ class Corpus:
         self.inputs = set()
 
     def add_input(self, inp:bytes, visited_blocks:set[int]):
+        '''Add input and the trace it produced'''
         assert isinstance(visited_blocks, set)
         assert isinstance(inp, bytes)
 
@@ -33,6 +36,7 @@ class Corpus:
         self.inputs.add(inp)
 
     def suggest_inputs(self, n):
+        '''Ask corpus for less visited inputs that are worth trying'''
         r = set()
         for block, st in sorted(self.blocks.items(), key=lambda x: x[1].visits): # least visited blocks
             for i in st.inputs:
@@ -47,13 +51,16 @@ class Corpus:
             self.inputs |= i.inputs
 
     def trim(self, n):
+        '''Remove some inputs to save memory'''
         for i in self.blocks.values():
             i.trim(n)
         self._update_inputs()
 
     def dump(self, f):
+        '''Write corpus to file'''
         pickle.dump(self.blocks, f)
 
     def load(self, f):
+        '''Load corpus from file'''
         self.blocks = pickle.load(f)
         self._update_inputs()

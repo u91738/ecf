@@ -15,6 +15,8 @@ def randrange_s(lo, hi):
     return lo if lo == hi else randrange(lo, hi)
 
 class BitFlip:
+    '''Flip N random bits'''
+
     def __init__(self, n_min, n_max):
         self.n_min = n_min
         self.n_max = n_max
@@ -31,6 +33,8 @@ class BitFlip:
         return r
 
 class RandByte:
+    '''Replace or insert N random bytes'''
+
     def __init__(self, n_min, n_max):
         self.n_min = n_min
         self.n_max = n_max
@@ -50,6 +54,8 @@ class RandByte:
         return r
 
 class ValueInsert:
+    '''Insert N values chosen from list'''
+
     def __init__(self, n_min, n_max, values = (
                                         b'(', b')', b'[', b']', b'{', b'}',
                                         b'<', b'>',
@@ -74,6 +80,8 @@ class ValueInsert:
         return r
 
 class Dup:
+    '''Duplicate random N-bytes part of sample'''
+
     def __init__(self, n_min, n_max):
         self.n_min = n_min
         self.n_max = n_max
@@ -88,6 +96,10 @@ class Dup:
         return r
 
 class Splice:
+    '''Merge two samples at position N.
+    b'aaaa' and b'bbbb' will make b'aaab' for N=3.
+    Samples are chosen from current sample set or whole corpus'''
+
     def __init__(self, corpus=None, n_min=0, n_max=0xFFFF):
         self.n_min = n_min
         self.n_max = n_max

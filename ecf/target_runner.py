@@ -7,6 +7,9 @@ def runtarget(args):
     return [t.run(i) for i in inputs]
 
 class ParallelTargetRunner:
+    '''Run target in parallel in multiple processes
+    Target must have a properly working .copy()'''
+
     def __init__(self, target, max_tasks=None):
         self.max_tasks = max_tasks if max_tasks else cpu_count()
         self.targets = [target] # code is a bit weird because we want one target obj per process
@@ -26,6 +29,8 @@ class ParallelTargetRunner:
         return list(it.chain.from_iterable(res))
 
 class SequentialTargetRunner:
+    '''Run target sequentially for each sample'''
+
     def __init__(self, target):
         self.target = target
 
