@@ -29,7 +29,7 @@ class RawTraceOutputTarget:
         if self.ostream == 'stdout':
             o, e = subprocess.PIPE, subprocess.DEVNULL
         else:
-            o, e = subprocess.PIPE, subprocess.DEVNULL
+            o, e = subprocess.DEVNULL, subprocess.PIPE
 
         try:
             p = subprocess.run(self.args,
@@ -45,5 +45,5 @@ class RawTraceOutputTarget:
 
     def _get_trace(self, ostream:bytes):
         return set(int.from_bytes(bytes(i), self.address_byte_order, signed=False)
-                for i in mit.chunked(ostream, self.address_size))
+                   for i in mit.chunked(ostream, self.address_size))
 

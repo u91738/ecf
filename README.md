@@ -14,7 +14,7 @@ class SomeTarget(GCovTarget):
     def run(self, input):
         # somehow apply input to your target
         # get *.gcda to directory in self.playground.name
-        success = True # True if did'nt crash
+        success = True # True if didn't crash
         return success, self._last_trace()
 
 # create target
