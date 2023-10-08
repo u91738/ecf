@@ -1,5 +1,3 @@
-from random import randrange, choice
-
 class Rotate:
     def __init__(self, *mutators):
         self.mutators = mutators
@@ -13,4 +11,26 @@ class Rotate:
         m = self.mutators[self.i]
         self.i = (self.i + 1) % len(self.mutators)
         self.__update_name()
+        return m.mutate(samples, n)
+
+class NRotate:
+    def __init__(self, *mutators):
+        self.mutators = mutators
+        self.mutator_ind = 0
+        self.mutator_uses_left = mutators[0][1]
+        self.__update()
+
+    def __update(self):
+        m, uses = self.mutators[self.mutator_ind]
+        self.name = m.name
+        self.mutator_uses_left = uses
+
+    def mutate(self, samples, n):
+        if self.mutator_uses_left <= 0:
+            self.mutator_ind = (self.mutator_ind + 1) % len(self.mutators)
+            self.__update()
+
+        m = self.mutators[self.mutator_ind][0]
+        self.mutator_uses_left -= 1
+
         return m.mutate(samples, n)

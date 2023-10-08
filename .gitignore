@@ -1,5 +1,9 @@
 __pycache__
 dynamorio
 example-data/example
-example-data/example-gcov
+example-data/example-*
 example-data/*.gcno
+*.o
+*.bin
+*.elf
+*.pickle

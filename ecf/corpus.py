@@ -1,4 +1,5 @@
 from collections import defaultdict
+import pickle
 
 class BlockStats:
     def __init__(self):
@@ -40,10 +41,19 @@ class Corpus:
                     return r
         return r
 
-    def trim(self, n):
-        for i in self.blocks.values():
-            i.trim(n)
-
+    def _update_inputs(self):
         self.inputs = set()
         for i in self.blocks.values():
             self.inputs |= i.inputs
+
+    def trim(self, n):
+        for i in self.blocks.values():
+            i.trim(n)
+        self._update_inputs()
+
+    def dump(self, f):
+        pickle.dump(self.blocks, f)
+
+    def load(self, f):
+        self.blocks = pickle.load(f)
+        self._update_inputs()
