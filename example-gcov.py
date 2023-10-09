@@ -14,13 +14,14 @@ t = GCovTarget(['./example-data/example-gcov'], ['./example-data/example-gcov-cJ
 initial_corpus = read_corpus_dir('./example-data/corpus')
 corpus = Corpus()
 mut = m.NRotate(
-    (m.RandByte(1, 4), 3),
-    (m.Splice(corpus), 2),
-    (m.MarkovChain(None, 0.2), 1))
+    (m.RandByte(1, 4), 5),
+    (m.MarkovChainDict(corpus, 0.2), 1))
 
+state_path = 'fuzzer_state.pickle'
 try:
-    with open('fuzzer_state.pickle', 'rb') as f:
+    with open(state_path, 'rb') as f:
         corpus.load(f)
+    print('State loaded from', state_path)
 except FileNotFoundError:
     pass
 
@@ -41,3 +42,4 @@ with ParallelTargetRunner(t) as runner:
     except KeyboardInterrupt:
         with open('fuzzer_state.pickle', 'wb') as f:
             fuzz.corpus.dump(f)
+        print('State saved to', state_path)
